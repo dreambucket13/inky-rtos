@@ -7,6 +7,9 @@ add_executable(
 
 target_include_directories(${OUTPUT_NAME} PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/../drivers/button/
+        ${CMAKE_CURRENT_LIST_DIR}/../drivers/rgbled/
+        ${CMAKE_CURRENT_LIST_DIR}/../drivers/uc8151/
         )
 
 # Pull in pico libraries that we need
