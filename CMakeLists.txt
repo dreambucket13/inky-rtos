@@ -37,10 +37,10 @@ function(add_resource target file)
   target_sources(${ARGV0} PRIVATE ${NAME}.o)
 endfunction(add_resource)
 
-include_directories(
-  ${CMAKE_CURRENT_LIST_DIR}
-  ${CMAKE_CURRENT_LIST_DIR}/App/
-)
+# include_directories(
+#   ${CMAKE_CURRENT_LIST_DIR}
+#   ${CMAKE_CURRENT_LIST_DIR}/App/
+# )
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
 
