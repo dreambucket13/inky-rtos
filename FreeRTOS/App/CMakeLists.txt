@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.13)
 include(pico_sdk_import.cmake)
 
 # Pull in FreeRTOS
+set(FREERTOS_KERNEL_PATH ${CMAKE_CURRENT_LIST_DIR}/../Source/)
 include(FreeRTOS_Kernel_import.cmake)
 
 project(example C CXX ASM)
@@ -59,7 +60,7 @@ target_compile_definitions(main_blinky PRIVATE
 
 target_include_directories(main_blinky PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${CMAKE_CURRENT_LIST_DIR}/../../Common/include)
+        ${CMAKE_CURRENT_LIST_DIR}/../Common/include)
 
 target_link_libraries(main_blinky pico_stdlib FreeRTOS-Kernel FreeRTOS-Kernel-Heap1)
 pico_add_extra_outputs(main_blinky)
