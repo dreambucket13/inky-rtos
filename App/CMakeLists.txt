@@ -1,24 +1,53 @@
-# set(OUTPUT_NAME inky_pack_demo)
+cmake_minimum_required(VERSION 3.13)
 
-# add_executable(
-#   ${OUTPUT_NAME}
-#   inky_pack_demo.cpp
-# )
+# Pull in SDK (must be before project)
+include(pico_sdk_import.cmake)
 
-# target_include_directories(${OUTPUT_NAME} PRIVATE
-#         ${CMAKE_CURRENT_LIST_DIR}
-#         ${CMAKE_CURRENT_LIST_DIR}/../drivers/button/
-#         ${CMAKE_CURRENT_LIST_DIR}/../drivers/rgbled/
-#         ${CMAKE_CURRENT_LIST_DIR}/../drivers/uc8151/
-#         )
+# Pull in FreeRTOS
+include(FreeRTOS_Kernel_import.cmake)
 
-# # Pull in pico libraries that we need
-# target_link_libraries(${OUTPUT_NAME} pico_stdlib hardware_spi hardware_pwm hardware_dma rgbled button uc8151 pico_graphics)
+project(example C CXX ASM)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
-# # create map/bin/hex file etc.
-# pico_add_extra_outputs(${OUTPUT_NAME})
+pico_sdk_init()
 
-#build RTOS blinky
+add_executable(main_full
+        main.c
+        main_full.c
+        IntQueueTimer.c
+        RegTest.s
+        ../../Common/Minimal/blocktim.c
+        ../../Common/Minimal/countsem.c
+        ../../Common/Minimal/dynamic.c
+        ../../Common/Minimal/recmutex.c
+        ../../Common/Minimal/QueueOverwrite.c
+        ../../Common/Minimal/EventGroupsDemo.c
+        ../../Common/Minimal/IntSemTest.c
+        ../../Common/Minimal/IntQueue.c
+        ../../Common/Minimal/TaskNotify.c
+        ../../Common/Minimal/TimerDemo.c
+        ../../Common/Minimal/GenQTest.c
+        ../../Common/Minimal/death.c
+        ../../Common/Minimal/semtest.c
+        ../../Common/Minimal/BlockQ.c
+        ../../Common/Minimal/flop.c
+        )
+
+target_compile_definitions(main_full PRIVATE
+        mainCREATE_SIMPLE_BLINKY_DEMO_ONLY=0
+        )
+
+target_include_directories(main_full PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/../../Common/include)
+
+target_compile_definitions(main_full PRIVATE
+        PICO_STDIO_STACK_BUFFER_SIZE=64 # use a small printf on stack buffer
+)
+target_link_libraries(main_full pico_stdlib FreeRTOS-Kernel FreeRTOS-Kernel-Heap4)
+pico_add_extra_outputs(main_full)
+
 add_executable(main_blinky
         main.c
         main_blinky.c
@@ -30,11 +59,7 @@ target_compile_definitions(main_blinky PRIVATE
 
 target_include_directories(main_blinky PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
-        ${CMAKE_CURRENT_LIST_DIR}/App/
-        ${CMAKE_CURRENT_LIST_DIR}/../FreeRTOS/Source/include/
-        ${CMAKE_CURRENT_LIST_DIR}/../FreeRTOS/Common/include/
-        ${CMAKE_CURRENT_LIST_DIR}/../FreeRTOS/Source/portable/ThirdParty/GCC/RP2040/include/
-        )
+        ${CMAKE_CURRENT_LIST_DIR}/../../Common/include)
 
 target_link_libraries(main_blinky pico_stdlib FreeRTOS-Kernel FreeRTOS-Kernel-Heap1)
 pico_add_extra_outputs(main_blinky)
